@@ -1,0 +1,38 @@
+{
+    "JPEG": {
+        "header": "FFD8",
+        "footer": "FFD9"
+    },
+    "PNG": {
+        "header": "89504E470D0A1A0A",
+        "footer": "49454E44AE426082"
+    },
+    "PDF": {
+        "header": "25504446",
+        "footer": "2525454F46"
+    },
+    "ZIP": {
+        "header": "504B0304",
+        "footer": "504B0506"
+    },
+    "DOCX": {
+        "header": "504B0304",
+        "footer": "504B0506"
+    },
+    "MP4": {
+        "header": "66747970",
+        "footer": "6D6F6F76"
+    },
+    "MP3": {
+        "header": "494433",
+        "footer": null
+    },
+    "EXE": {
+        "header": "4D5A",
+        "footer": null
+    },
+    "TXT": {
+        "header": "",
+        "footer": null
+    }
+}
