@@ -1,23 +1,313 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Data Recovery Tool</title>
-  <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Quick Scan Utility - Futuristic Edition</title>
+  <!-- Importing Google Fonts for futuristic look -->
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron&family=Roboto&display=swap" rel="stylesheet">
+  <style>
+    /* Reset & Global Styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      background-color: #000;
+      color: #00FFAA;
+      font-family: 'Roboto', sans-serif;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+    /* Header */
+    header {
+      text-align: center;
+      padding: 20px;
+    }
+    header h1 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 3rem;
+      color: #00FFAA;
+    }
+    /* Container */
+    .container {
+      max-width: 1200px;
+      margin: 20px auto;
+      padding: 20px;
+    }
+    .card {
+      background-color: #111;
+      border: 2px solid #00FFAA;
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 0 20px rgba(0, 255, 170, 0.2);
+    }
+    .card h2 {
+      margin-bottom: 10px;
+      color: #00FFAA;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.8rem;
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+    input[type="text"], select {
+      width: 100%;
+      padding: 10px;
+      border-radius: 5px;
+      border: none;
+      background-color: #222;
+      color: #00FFAA;
+      font-size: 1rem;
+    }
+    input[type="checkbox"] {
+      margin-right: 10px;
+    }
+    /* Buttons */
+    .buttons {
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+    button {
+      background-color: #00FFAA;
+      border: none;
+      color: #000;
+      padding: 10px 20px;
+      border-radius: 5px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s, border 0.3s;
+    }
+    button:hover {
+      background-color: #00e699;
+      border: 2px solid #00cc88;
+    }
+    button:disabled {
+      background-color: #555;
+      cursor: not-allowed;
+    }
+    /* Results and Log Areas */
+    .results, .log {
+      max-height: 300px;
+      overflow-y: auto;
+      background-color: #111;
+      border: 1px solid #00FFAA;
+      border-radius: 5px;
+      padding: 10px;
+      margin-top: 10px;
+    }
+    .result-item {
+      padding: 5px;
+      border-bottom: 1px solid #00FFAA;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+    .result-item:hover, .result-item.selected {
+      background-color: #00FFAA;
+      color: #000;
+    }
+    /* Responsive */
+    @media (max-width: 768px) {
+      header h1 {
+        font-size: 2rem;
+      }
+      .buttons {
+        flex-direction: column;
+      }
+    }
+  </style>
 </head>
 <body>
-  <div id="app">
-    <h1>Data Recovery Tool</h1>
-    <div id="file-type-select">
-      <h2>Select File Types for Recovery:</h2>
-      <!-- Add checkboxes dynamically using JS -->
+  <header>
+    <h1>Quick Scan Utility</h1>
+  </header>
+  <div class="container">
+    <!-- Scan Options Card -->
+    <div class="card" id="scan-options">
+      <h2>Scan Options</h2>
+      <div class="form-group">
+        <label for="drive-select">Select Drive(s):</label>
+        <select id="drive-select" multiple size="3">
+          <!-- Options dynamically populated -->
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="custom-path">Or Enter Custom Path:</label>
+        <input type="text" id="custom-path" placeholder="e.g. D:\ or /mnt/disk">
+      </div>
+      <div class="form-group">
+        <label>
+          <input type="checkbox" id="include-recycle" checked>
+          Include Recycle Bin
+        </label>
+      </div>
+      <div class="buttons">
+        <button id="scan-btn">Start Quick Scan</button>
+        <button id="exit-btn">Exit</button>
+      </div>
     </div>
-    <button id="select-source">Select Source Folder</button>
-    <button id="select-destination">Select Destination Folder</button>
-    <button id="recover-files">Recover Files</button>
+
+    <!-- Scan Results Card -->
+    <div class="card" id="scan-results" style="display: none;">
+      <h2>Scan Results (Deleted Files)</h2>
+      <div class="results" id="results-list">
+        <!-- Scan results will be injected here -->
+      </div>
+      <div class="buttons">
+        <button id="recover-selected-btn">Recover Selected</button>
+        <button id="recover-all-btn">Recover All</button>
+      </div>
+    </div>
+
+    <!-- Log Section -->
+    <div class="card" id="log-section">
+      <h2>Log</h2>
+      <div class="log" id="log-area">
+        <!-- Log messages will appear here -->
+      </div>
+    </div>
   </div>
 
-  <script src="script.js"></script>
+  <script>
+    // --- JavaScript for Dynamic Behavior ---
+    // Sample available drives (in a real-world scenario, you might fetch these from a backend)
+    const availableDrives = ["C:\\", "D:\\", "E:\\"];
+    const driveSelect = document.getElementById('drive-select');
+    const customPathInput = document.getElementById('custom-path');
+    const includeRecycleCheckbox = document.getElementById('include-recycle');
+    const scanBtn = document.getElementById('scan-btn');
+    const exitBtn = document.getElementById('exit-btn');
+    const resultsList = document.getElementById('results-list');
+    const scanResultsCard = document.getElementById('scan-results');
+    const logArea = document.getElementById('log-area');
+    const recoverSelectedBtn = document.getElementById('recover-selected-btn');
+    const recoverAllBtn = document.getElementById('recover-all-btn');
+
+    let scanResults = [];
+
+    // Populate drives dropdown
+    function populateDrives() {
+      availableDrives.forEach(drive => {
+        const option = document.createElement('option');
+        option.value = drive;
+        option.textContent = drive;
+        driveSelect.appendChild(option);
+      });
+    }
+    populateDrives();
+
+    // Utility: Log messages to the log area
+    function logMessage(message) {
+      const p = document.createElement('p');
+      p.textContent = message;
+      logArea.appendChild(p);
+      logArea.scrollTop = logArea.scrollHeight;
+    }
+
+    // Simulated scanning process
+    function startScan() {
+      // Clear previous log and results
+      logArea.innerHTML = "";
+      resultsList.innerHTML = "";
+      scanResults = [];
+
+      // Gather selected drives and custom path
+      const selectedDrives = Array.from(driveSelect.selectedOptions).map(opt => opt.value);
+      const customPath = customPathInput.value.trim();
+      if (customPath) selectedDrives.push(customPath);
+
+      if (selectedDrives.length === 0) {
+        alert("Please select at least one drive or enter a custom path.");
+        return;
+      }
+
+      const includeRecycle = includeRecycleCheckbox.checked;
+      logMessage("Starting quick scan on: " + selectedDrives.join(", "));
+      if (includeRecycle) logMessage("Including Recycle Bin in scan.");
+
+      // Simulate a scanning delay
+      setTimeout(() => {
+        // Create simulated scan results
+        scanResults = [
+          { path: selectedDrives[0] + "deleted_file1.txt", condition: "Recoverable" },
+          { path: selectedDrives[0] + "deleted_file2.jpg", condition: "Overwritten" },
+          { path: selectedDrives[0] + "deleted_file3.doc", condition: "Recoverable" }
+        ];
+        logMessage("Scan completed. Found " + scanResults.length + " file(s).");
+        displayResults();
+      }, 2000);
+    }
+
+    // Display scan results in the results list
+    function displayResults() {
+      resultsList.innerHTML = "";
+      scanResults.forEach((result, index) => {
+        const div = document.createElement('div');
+        div.className = "result-item";
+        div.dataset.index = index;
+        div.textContent = (index + 1) + ". " + result.path + " [" + result.condition + "]";
+        // Toggle selection on click
+        div.addEventListener('click', function () {
+          div.classList.toggle('selected');
+        });
+        resultsList.appendChild(div);
+      });
+      scanResultsCard.style.display = "block";
+    }
+
+    // Simulated recovery process
+    function recoverFiles(selectedOnly) {
+      let filesToRecover = [];
+      if (selectedOnly) {
+        const selectedItems = document.querySelectorAll('.result-item.selected');
+        if (selectedItems.length === 0) {
+          alert("Please select files to recover.");
+          return;
+        }
+        selectedItems.forEach(item => {
+          const index = parseInt(item.dataset.index, 10);
+          filesToRecover.push(scanResults[index]);
+        });
+      } else {
+        filesToRecover = scanResults;
+      }
+
+      if (filesToRecover.length === 0) {
+        alert("No files to recover.");
+        return;
+      }
+
+      // Simulate recovery delay
+      logMessage("Starting recovery for " + filesToRecover.length + " file(s)...");
+      setTimeout(() => {
+        logMessage("Recovered " + filesToRecover.length + " file(s).");
+        alert("Recovered " + filesToRecover.length + " file(s) successfully.");
+      }, 1500);
+    }
+
+    // Event Listeners
+    scanBtn.addEventListener('click', startScan);
+    exitBtn.addEventListener('click', () => {
+      if (confirm("Are you sure you want to exit?")) {
+        // In a web app you might navigate away or close a modal.
+        window.location.href = "about:blank";
+      }
+    });
+    recoverSelectedBtn.addEventListener('click', () => recoverFiles(true));
+    recoverAllBtn.addEventListener('click', () => recoverFiles(false));
+  </script>
 </body>
 </html>

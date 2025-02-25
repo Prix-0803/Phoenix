@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Recovery Tool</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="styles.css">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            margin-top: 50px;
+        }
+        h2 {
+            margin-bottom: 20px;
+        }
+        .file-type-options {
+            border: 1px solid #ddd;
+            padding: 20px;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        .btn-container {
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-between;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>File Type Selection</h2>
+        <p>What sort of files are you trying to recover?</p>
+        <div class="file-type-options">
+            <form>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="fileType" id="allFiles" value="allFiles" checked>
+                    <label class="form-check-label" for="allFiles">
+                        <strong>All Files</strong><br>
+                        Show all files.
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="fileType" id="pictures" value="pictures">
+                    <label class="form-check-label" for="pictures">
+                        <strong>Pictures</strong><br>
+                        Show only image files (e.g., JPG, PNG).
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="fileType" id="music" value="music">
+                    <label class="form-check-label" for="music">
+                        <strong>Music</strong><br>
+                        Show only audio files (e.g., MP3, WAV).
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="fileType" id="documents" value="documents">
+                    <label class="form-check-label" for="documents">
+                        <strong>Documents</strong><br>
+                        Show only document files (e.g., Word, Excel, PDF).
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="fileType" id="video" value="video">
+                    <label class="form-check-label" for="video">
+                        <strong>Video</strong><br>
+                        Show only video files (e.g., MP4, AVI).
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="fileType" id="compressed" value="compressed">
+                    <label class="form-check-label" for="compressed">
+                        <strong>Compressed</strong><br>
+                        Show only compressed files (e.g., ZIP, RAR).
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="fileType" id="emails" value="emails">
+                    <label class="form-check-label" for="emails">
+                        <strong>Emails</strong><br>
+                        Show only emails from supported email clients.
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="fileType" id="systemFiles" value="systemFiles">
+                    <label class="form-check-label" for="systemFiles">
+                        <strong>System Files</strong><br>
+                        Show only system and configuration files.
+                    </label>
+                </div>
+            </form>
+        </div>
+        <div class="btn-container">
+            <button class="btn btn-secondary">Back</button>
+            <button class="btn btn-primary">Next</button>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

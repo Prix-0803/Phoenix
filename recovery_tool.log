@@ -1,1 +1,0 @@
-2025-01-18 15:10:13,393 - ERROR - Error scanning with pytsk3: FS_Info_Con: (tsk3.cpp:214) Unable to open the image as a filesystem at offset: 0x00000000 with error: Cannot determine file system type

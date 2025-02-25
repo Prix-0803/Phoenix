@@ -1,0 +1,16 @@
+{
+  "name": "miscreant-canvas-test-1tikh",
+  "productName": "miscreant-canvas-test-1tikh",
+  "description": "My Electron application description",
+  "keywords": [],
+  "main": "./main.js",
+  "version": "1.0.0",
+  "author": "priya",
+  "scripts": {
+    "start": "electron ."
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "electron": "33.3.0"
+  }
+}
